@@ -28,11 +28,4 @@ int getInt(char* message);
 /// @return float Devuelve el numero ingresado.
 float getFloat(char* message);
 
-/// @fn int isInt(float)
-/// @brief Funcion que verifica si el numero ingresado es un entero o no.
-///
-/// @param float number Numero que recibe para validar.
-/// @return int Devuelve uno 1 si el numero ingresado es un int o 0 si es int.
-int isInt (float number);
-
 #endif /* FUNCIONES_H_ */

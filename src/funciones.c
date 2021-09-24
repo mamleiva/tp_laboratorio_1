@@ -100,7 +100,7 @@ void mostrarMenu(){ //comienzo de mostrar menu.
 				}//fin de validacion para que no se divida por cero.
 
 				printf("El resultado de %.2f * %.2f es: %.2f\n", primeroNumero, segundoNumero, multiplication);
-				printf("El factorial de (%.2f) es: %lf y el factorial de (%.2f) es: %lf\n\n", primeroNumero, factorialPrimerNumero, segundoNumero, factorialSegundoNumero);
+				printf("El factorial de (%.2f) es: %.lf y el factorial de (%.2f) es: %lf\n\n", primeroNumero, factorialPrimerNumero, segundoNumero, factorialSegundoNumero);
 
         	}
             break;
@@ -131,15 +131,6 @@ int getInt(char* message){
     fflush(stdin);
     scanf("%d", &number);
     return number;
-}
-
-int isInt (float number){
-    int entero = number;
-    int isInt = 0;
-    if (number - entero == 0){
-        isInt = 1;
-    }
-    return isInt;
 }
 
 

@@ -16,9 +16,9 @@
 /// @param float Primer numero flotante.
 /// @param float Segundo numero flotante.
 /// @return float Resultado de la suma.
-float sumaNumeros (float firstNumber, float secondNumber)
+float sumaNumeros (float primerNumero, float segundoNumbero)
 {
-    return firstNumber + secondNumber;
+    return primerNumero + segundoNumbero;
 }
 
 /// @fn float restaNumeros(float, float)
@@ -27,9 +27,9 @@ float sumaNumeros (float firstNumber, float secondNumber)
 /// @param float Primer numero flotante.
 /// @param float Segundo numero flotante.
 /// @return float Resultado de la resta.
-float restaNumeros(float firstNumber, float secondNumber)
+float restaNumeros(float primerNumero, float segundoNumero)
 {
-    return firstNumber - secondNumber;
+    return primerNumero - segundoNumero;
 }
 
 
@@ -37,16 +37,16 @@ float restaNumeros(float firstNumber, float secondNumber)
  * @fn int division(float*, float, float)
  * @brief Funcion que recibe puntero a floar, dos numeros flotantes y los divide.
  * @param pResultado puntero a resultado &varconresultado
- * @param firstNumber float Primer numero flotante.
- * @param secondNumber float Segundo numero flotante
+ * @param primerNumero float Primer numero flotante.
+ * @param segundoNumero float Segundo numero flotante
  * @return return int, -1 si hubo error, 0 si no hubo error.
  */
-int division(float* pResultado, float firstNumber, float secondNumber)
+int division(float* pResultado, float primerNumero, float segundoNumero)
 {
     int retorno = -1;
-    if(pResultado != NULL && secondNumber != 0)
+    if(pResultado != NULL && segundoNumero != 0)
     {
-    	*pResultado = firstNumber / secondNumber;
+    	*pResultado = primerNumero / segundoNumero;
         retorno = 0;
     }
 
@@ -59,9 +59,9 @@ int division(float* pResultado, float firstNumber, float secondNumber)
 /// @param float Primer numero flotante.
 /// @param float Segundo numero flotante.
 /// @return float Resultado de la multiplicacion.
-float multilicacionDosNumeros(float firstNumber, float secondNumber)
+float multilicacionDosNumeros(float primerNumero, float segundoNumero)
 {
-    return firstNumber * secondNumber;
+    return primerNumero * segundoNumero;
 }
 
 /// @fn int factorial(float)
