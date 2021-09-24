@@ -10,13 +10,13 @@
 #include "operaciones.h"
 #include "funciones.h"
 
-/// @fn float addNumbers(float, float)
+/// @fn float sumaNumeros(float, float)
 /// @brief Funcion que recibe dos numeros flotantes y los suma.
 ///
 /// @param float Primer numero flotante.
 /// @param float Segundo numero flotante.
 /// @return float Resultado de la suma.
-float addNumbers (float firstNumber, float secondNumber)
+float sumaNumeros (float firstNumber, float secondNumber)
 {
     return firstNumber + secondNumber;
 }
@@ -32,54 +32,54 @@ float restaNumeros(float firstNumber, float secondNumber)
     return firstNumber - secondNumber;
 }
 
-/// @fn float divideNumbers(float, float, char*)
-/// @brief Funcion que recibe dos numeros flotantes y los divide.
-///
-/// @param float Primer numero flotante.
-/// @param float Segundo numero flotante.
-/// @param errorMessage char* Mensaje de error en caso que la division no se pueda realizar (si el segundo numero es un cero).
-/// @return float con resultado de la division.
-float divideNumbers(float firstNumber, float secondNumber, char* errorMessage)
+
+/**
+ * @fn int division(float*, float, float)
+ * @brief Funcion que recibe puntero a floar, dos numeros flotantes y los divide.
+ * @param pResultado puntero a resultado &varconresultado
+ * @param firstNumber float Primer numero flotante.
+ * @param secondNumber float Segundo numero flotante
+ * @return return int, -1 si hubo error, 0 si no hubo error.
+ */
+int division(float* pResultado, float firstNumber, float secondNumber)
 {
-    float returnValue = 0;
-    if(secondNumber == 0)
+    int retorno = -1;
+    if(pResultado != NULL && secondNumber != 0)
     {
-        returnValue = -1;
+    	*pResultado = firstNumber / secondNumber;
+        retorno = 0;
     }
-    else
-    {
-        returnValue = firstNumber / secondNumber;
-    }
-    return returnValue;
+
+    return retorno;
 }
 
-/// @fn float multiplyNumbers(float, float)
+/// @fn float multilicacionDosNumeros(float, float)
 /// @brief Esta funcion recibe dos numeros flotantes y los multiplica.
 ///
 /// @param float Primer numero flotante.
 /// @param float Segundo numero flotante.
 /// @return float Resultado de la multiplicacion.
-float multiplyNumbers(float firstNumber, float secondNumber)
+float multilicacionDosNumeros(float firstNumber, float secondNumber)
 {
     return firstNumber * secondNumber;
 }
 
-/// @fn int getFactorial(float)
+/// @fn int factorial(float)
 /// @brief Funcion recibe un numero flotante y realiza el factoreo del mismo.
 ///
 /// @param float Numero para factorizar.
 /// @return int Resultado del factoreo.
-double getFactorial(float number)
+double factorial(float number)
 {
-	double factorial;
+	double fact;
     if(number >= 0)
     {
-        factorial = 1;
+        fact = 1;
         for(int i =2; i <= number; i++)
         {
-        	factorial = factorial * i;
+        	fact = fact * i;
         }
     }
-    return factorial;
+    return fact;
 }
 

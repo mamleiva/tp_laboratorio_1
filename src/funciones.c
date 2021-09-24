@@ -17,12 +17,14 @@ void mostrarMenu(){ //comienzo de mostrar menu.
     float segundoNumero = 0; //segundo operando ingresado
     float resultadoResta; //variable que guarda el resultado de la resta
     float resultadoSuma; //variable que guarda el resultado de la suma
-    float division; //variable que guarda el resultado de la division
+    float resultadoDivision; //variable que guarda el resultado de la division
+    int retornoDivision; //variable que guarda el retorno de la division
     float multiplication; //variable que guarda el resultado de la multiplicacion
     double factorialPrimerNumero; //variable que guarda el resultado del factorial del primer numero
     double factorialSegundoNumero; //variable que guarda el resultado del factorial del segundo numero
     int flagPrimerOperando = 0; //bandera para primer operando.
     int flagSegundoOperando = 0; //bandera para segundo operando.
+    int flagCalculos = 0; //bandera para saber si se realizaron los calculos.
 
 
     do{
@@ -63,35 +65,44 @@ void mostrarMenu(){ //comienzo de mostrar menu.
                     printf("Factorizacion del primer operando: %.2f!\n", primeroNumero);
                     printf("Factorizacion del segundo operando: %.2f!\n", segundoNumero);
                     printf("\n\n");
-                    resultadoSuma = addNumbers(primeroNumero,segundoNumero);
+                    resultadoSuma = sumaNumeros(primeroNumero,segundoNumero);
                     resultadoResta = restaNumeros(primeroNumero,segundoNumero);
-                    division = divideNumbers(primeroNumero,segundoNumero, "Error. La division por cero no se puede realizar. Ingrese un nuevo segundo operando.\n");
-                    multiplication = multiplyNumbers(primeroNumero,segundoNumero);
-                    factorialPrimerNumero = getFactorial(primeroNumero);
-                    factorialSegundoNumero = getFactorial(segundoNumero);
+                    retornoDivision = division(&resultadoDivision, primeroNumero, segundoNumero);
+                    multiplication = multilicacionDosNumeros(primeroNumero,segundoNumero);
+                    factorialPrimerNumero = factorial(primeroNumero);
+                    factorialSegundoNumero = factorial(segundoNumero);
+                    flagCalculos = 1;
 
                 }
             }
             break;
         case 4:
             //Muestro el informe de los resultados de las operaciones (si se pudieron realizar)
-        	system("@cls||clear");
-            printf("El informe de los resultados es:\n");
-            printf("El resultado de %.2f + %.2f es: %.2f\n", primeroNumero, segundoNumero, resultadoSuma);
-            printf("El resultado de %.2f - %.2f es: %.2f\n", primeroNumero, segundoNumero, resultadoResta);
+        	if(flagCalculos==0)
+        	{
+        		printf("Usted no ha realizado los calculos, Seleccione la opcion 3 antes.\n");
+        	}
+        	else
+        	{
+        		system("@cls||clear");
+				printf("El informe de los resultados es:\n");
+				printf("El resultado de %.2f + %.2f es: %.2f\n", primeroNumero, segundoNumero, resultadoSuma);
+				printf("El resultado de %.2f - %.2f es: %.2f\n", primeroNumero, segundoNumero, resultadoResta);
 
-            //validacion de division
-            if(division!=-1)
-            {
-                printf("El resultado de %.2f / %.2f es: %.2f\n", primeroNumero, segundoNumero, division);
-            }
-            else
-            {
-                printf("La division por CERO no es posible. Si quiere realizar una division, ingrese un segundo operando mayor a cero\n");
-            }//fin de validacion para que no se divida por cero.
+				//validacion de division
+				if(retornoDivision==0)
+				{
+					printf("El resultado de %.2f / %.2f es: %.2f\n", primeroNumero, segundoNumero, resultadoDivision);
+				}
+				else
+				{
+					printf("La division por CERO no es posible. Si quiere realizar una division, ingrese un segundo operando mayor a cero\n");
+				}//fin de validacion para que no se divida por cero.
 
-            printf("El resultado de %.2f * %.2f es: %.2f\n", primeroNumero, segundoNumero, multiplication);
-            printf("El factorial de (%.2f) es: %lf y el factorial de (%.2f) es: %lf\n\n", primeroNumero, factorialPrimerNumero, segundoNumero, factorialSegundoNumero);
+				printf("El resultado de %.2f * %.2f es: %.2f\n", primeroNumero, segundoNumero, multiplication);
+				printf("El factorial de (%.2f) es: %lf y el factorial de (%.2f) es: %lf\n\n", primeroNumero, factorialPrimerNumero, segundoNumero, factorialSegundoNumero);
+
+        	}
             break;
         case 5:
             //salida del programa
@@ -100,10 +111,10 @@ void mostrarMenu(){ //comienzo de mostrar menu.
             opcionContinuar ='n';
             break;
         default:
-            printf("Dato invalido.\n");
+            printf("Dato invalido. ingrese 1, 2, 3, 4, 5.\n");  //si ingresa un dato invalido vuelve al while
             break;
         }//switch
-    }while(opcionContinuar == 's');//do_while
+    }while(opcionContinuar == 's');// fin del dowhile
 }//fin de mostrar_menu
 
 float getFloat(char* message){

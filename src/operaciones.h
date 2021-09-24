@@ -8,13 +8,13 @@
 #ifndef OPERACIONES_H_
 #define OPERACIONES_H_
 
-/// @fn float addNumbers(float, float)
+/// @fn float sumaNumeros(float, float)
 /// @brief Funcion que recibe dos numeros flotantes y los suma.
 ///
 /// @param float Primer numero flotante.
 /// @param float Segundo numero flotante.
 /// @return float Resultado de la suma.
-float addNumbers (float, float);
+float sumaNumeros (float, float);
 
 /// @fn float restaNumeros(float, float)
 /// @brief Funcion que recibe dos numeros flotantes y los resta.
@@ -24,28 +24,27 @@ float addNumbers (float, float);
 /// @return float Resultado de la resta.
 float restaNumeros(float, float);
 
-/// @fn float divideNumbers(float, float, char*)
-/// @brief Funcion que recibe dos numeros flotantes y los divide.
-///
-/// @param float Primer numero flotante.
-/// @param float Segundo numero flotante.
-/// @param errorMessage char* Mensaje de error en caso que la division no se pueda realizar (si el segundo numero es un cero).
-/// @return float con resultado de la division.
-float  divideNumbers(float, float, char* errorMessage);
+ /// @fn int division(float*, float, float)
+ /// @brief Funcion que recibe puntero a floar, dos numeros flotantes y los divide.
+ /// @param pResultado puntero a resultado &varconresultado
+ /// @param firstNumber float Primer numero flotante.
+ /// @param secondNumber float Segundo numero flotante
+ /// @return return int, -1 si hubo error, 0 si no hubo error.
+int division(float* pResultado, float firstNumber, float secondNumber);
 
-/// @fn float multiplyNumbers(float, float)
+/// @fn float multilicacionDosNumeros(float, float)
 /// @brief Esta funcion recibe dos numeros flotantes y los multiplica.
 ///
 /// @param float Primer numero flotante.
 /// @param float Segundo numero flotante.
 /// @return float Resultado de la multiplicacion.
-float  multiplyNumbers (float, float);
+float  multilicacionDosNumeros (float, float);
 
-/// @fn int getFactorial(float)
+/// @fn int factorial(float)
 /// @brief Funcion recibe un numero flotante y realiza el factoreo del mismo.
 ///
 /// @param float Numero para factorizar.
 /// @return int Resultado del factoreo.
-double  getFactorial (float);
+double  factorial (float);
 
 #endif /* OPERACIONES_H_ */
