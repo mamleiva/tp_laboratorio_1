@@ -92,7 +92,7 @@ void mostrarMenu(){ //comienzo de mostrar menu.
 				//validacion de division
 				if(retornoDivision==0)
 				{
-					printf("El resultado de %.2f / %.2f es: %.2f\n", primeroNumero, segundoNumero, resultadoDivision);
+					printf("El resultado de %.2f / %.2f es: %.4f\n", primeroNumero, segundoNumero, resultadoDivision);
 				}
 				else
 				{
