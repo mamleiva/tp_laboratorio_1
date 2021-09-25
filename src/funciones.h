@@ -22,7 +22,7 @@ void mostrarMenu(void);
 int getInt(char* message);
 
 /// @fn float getFloat(char*)
-/// @brief Funcion que pide y devuelve un flotante.
+/// @brief Funcion que pide y devuelve un flotante, valida que se un numero ingresado.
 ///
 /// @param message char* Mensaje para solicitar el ingreso de un numero float.
 /// @return float Devuelve el numero ingresado.

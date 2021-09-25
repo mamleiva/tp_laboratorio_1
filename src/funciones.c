@@ -33,13 +33,13 @@ void mostrarMenu(){ //comienzo de mostrar menu.
         case 1:
             //ingreso del primer numero
             primeroNumero = getFloat("Ingrese un primer operando:");
-            printf("Ingrese el primer operando es: %.2f\n\n", primeroNumero);
+            printf("El primer operando es: %.2f\n\n", primeroNumero);
             flagPrimerOperando = 1;
             break;
         case 2:
             //ingreso del segundo numero
             segundoNumero = getFloat("Ingrese un segundo operando:");
-            printf("Ingrese el segundo operando es: %.2f\n\n", segundoNumero);
+            printf("El segundo operando es: %.2f\n\n", segundoNumero);
             flagSegundoOperando = 1;
             break;
         case 3: //calculos a realizar
@@ -119,9 +119,19 @@ void mostrarMenu(){ //comienzo de mostrar menu.
 
 float getFloat(char* message){
     float number;
+    int entero;
     printf(message);
     fflush(stdin);
     scanf("%f", &number);
+    entero = number;
+
+    while(number - entero)
+    {
+    	printf("Error! ingrese un numero: ");
+    	fflush(stdin);
+    	scanf("%f", &number);
+    	entero = number;
+    }
     return number;
 }
 

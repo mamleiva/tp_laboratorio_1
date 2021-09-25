@@ -72,6 +72,7 @@ float multilicacionDosNumeros(float primerNumero, float segundoNumero)
 double factorial(float number)
 {
 	double fact;
+	fact = 0;
     if(number >= 0)
     {
         fact = 1;
