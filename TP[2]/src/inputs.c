@@ -152,7 +152,7 @@ int getValidChar(char *letra) {
  * \return char Devuelve el caracter validado "s" o "n"
  *
  */
-char getConfirmacion(char mensaje[]) {
+char getConfirmacion(char mensaje[]){
 	char letter;
 	printf("%s", mensaje);
 	fflush(stdin);
