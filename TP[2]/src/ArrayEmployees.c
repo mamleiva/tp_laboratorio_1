@@ -7,7 +7,6 @@
 
 #include "ArrayEmployees.h"
 
-
 /** \brief muestra un menu de opciones para de altas, bajas y modificaciones de empleados
  *
  * \param list Employee* puntero a un array de empleados
@@ -31,7 +30,7 @@ void showMenu(Employee list[], int len) {
 
 		option =
 				getInt(
-						"Opciones:\n1. ALTAS.\n2. MODIFICAR.\n3. BAJA.\n4. INFORMAR.\n5. SALIR.\n");
+						"Opciones:\n1. ALTAS.\n2. MODIFICAR.\n3. BAJA.\n4. INFORMES.\n5. SALIR.\n");
 		switch (option) {
 		case 1:	///ALTAS
 			retorno = loadEmployee(list, len);
@@ -263,10 +262,12 @@ int buscarLibre(Employee *list, int len) {
  * \return int Devuelve "0" si logro cargar o "-1" (si no hay lugar disponible, si el largo del array esta mal o si el array es NULL)
  *
  */
+
 int addEmployee(Employee *list, int len, int id, char name[], char lastName[],
 		float salary, int sector) {
 	int retorno = -1;
 	int lugar_Disponible = buscarLibre(list, len);
+
 	if (lugar_Disponible != -1) {
 		list[lugar_Disponible].id = id;
 		strcpy(list[lugar_Disponible].name, name);
@@ -280,7 +281,7 @@ int addEmployee(Employee *list, int len, int id, char name[], char lastName[],
 }
 
 /**
- * @fn int getNewId(Employee*, int)
+ * @fn int obtenerNuevoId(Employee*, int)
  * @brief asigna nuevos ids
  *
  * @param list lista Employee* puntero al array de empleados
@@ -295,7 +296,6 @@ int obtenerNuevoId(Employee *list, int len) {
 		for (int i = 0; i < len; i++) {
 			if (flag == 0 || list[i].id > nuevoId) {
 				nuevoId = list[i].id;
-				//nuevoId++; // sumo 1 asi el id arranca en 1.
 				flag = 1;
 			}
 		}
@@ -320,8 +320,8 @@ int loadEmployee(Employee *list, int len) {
 	int id;
 	char confirmacion;
 	char opcion_continuar;
-	//int lugar_Disponible = buscarLibre(list, len);
-	if (list != NULL && len > 0) {
+	int lugar_Disponible = buscarLibre(list, len);
+	if (list != NULL && len > 0 && lugar_Disponible != -1) {
 		do {
 			getDataEmployee(name, lastName, &salary, &sector);
 			printf("\n");
@@ -344,66 +344,73 @@ int loadEmployee(Employee *list, int len) {
 			printf("\n");
 		} while (opcion_continuar != 'n');
 	}
+	else{
+		retorno = -1;
+	}
+
 	return retorno;
 }
 
-	/** \brief Ppide los datos de empleado y los guarda en las vars recibidas como parametro
-	 *
-	 * \param name[] char nombre del empleado
-	 * \param lastName[] char apellido del empleado
-	 * \param salary float*  puntero float con salario del empleado
-	 * \param sector int* puntero a int que es el sector del empleado
-	 * \return void
-	 *
-	 */
-	void getDataEmployee(char name[], char lastName[], float *salary,
-			int *sector) {
-		printf("Ingrese los datos del empleado: \n");
-		pedirCadena("Nombre del empleado: ", name);
-		pedirCadena("Apellido del empleado: ", lastName);
-		*salary = getFloat("Salario del empleado: ");
-		*sector = getIntMinMax("Sector del empleado", SECTORMIN, SECTORMAX);
-	}
+/** \brief Ppide los datos de empleado y los guarda en las vars recibidas como parametro
+ *
+ * \param name[] char nombre del empleado
+ * \param lastName[] char apellido del empleado
+ * \param salary float*  puntero float con salario del empleado
+ * \param sector int* puntero a int que es el sector del empleado
+ * \return void
+ *
+ */
+void getDataEmployee(char name[], char lastName[], float *salary, int *sector) {
+	printf("Ingrese los datos del empleado: \n");
+	pedirCadena("Nombre del empleado: ", name);
+	pedirCadena("Apellido del empleado: ", lastName);
+	*salary = getFloat("Salario del empleado: ");
+	*sector = getIntMinMax("Sector del empleado", SECTORMIN, SECTORMAX);
+}
 
-	/** \brief Busca a un empleado por id y devuelve la posicion del empleado dentro del array de empleados
-	 *
-	 * \param list Employee* puntero a un array de empleados
-	 * \param len int largo del array de empleados
-	 * \param id int id del empleado a buscar
-	 * \return int Devuelve el indice del empleado o "-1" (si no encontro al empleado, si el largo del array esta mal o si el array es NULL)
-	 *
-	 */
-	int findEmployeeById(Employee *list, int len, int id) {
-		int retorno = -1;
-		int i;
-		if (list != NULL && len > 0) {
-			for (i = 0; i < len; i++) {
-				if (list[i].isEmpty == FALSE) {
-					if (list[i].id == id) {
-						retorno = i;
-						break;
-					}
-
+/** \brief Busca a un empleado por id y devuelve la posicion del empleado dentro del array de empleados
+ *
+ * \param list Employee* puntero a un array de empleados
+ * \param len int largo del array de empleados
+ * \param id int id del empleado a buscar
+ * \return int Devuelve el indice del empleado o "-1" (si no encontro al empleado, si el largo del array esta mal o si el array es NULL)
+ *
+ */
+int findEmployeeById(Employee *list, int len, int id) {
+	int retorno = -1;
+	int i;
+	if (list != NULL && len > 0) {
+		for (i = 0; i < len; i++) {
+			if (list[i].isEmpty == FALSE) {
+				if (list[i].id == id) {
+					retorno = i;
+					break;
 				}
+
 			}
 		}
-		return retorno;
 	}
+	return retorno;
+}
 
-	/** \brief imprime en consola la lista de empleados existentes y da la opcion de eliminacion de un empleado.
-	 *
-	 * \param list Employee* puntero a un array de empleados
-	 * \param len int largo del array de empleados
-	 * \return int Devuelve "-1" (si el largo del array es invalido, si el array es NULL), "1" si no encontro al empleado por ID, "0" si pudo eliminar al empleado, "2" si el usuario cancela la operacion.
-	 */
-	int deleteEmployee(Employee *list, int len) {
-		int retorno = -1;
-		int id = 0;
-		int index = 0;
-		char confirmacion;
-		if (list != NULL && len > 0) {
-			printf("Estos son los empleados:\n");
-			printEmployees(list, len);
+/** \brief imprime en consola la lista de empleados existentes y da la opcion de eliminacion de un empleado.
+ *
+ * \param list Employee* puntero a un array de empleados
+ * \param len int largo del array de empleados
+ * \return int Devuelve "-1" (si el largo del array es invalido, si el array es NULL), "1" si no encontro al empleado por ID, "0" si pudo eliminar al empleado, "2" si el usuario cancela la operacion.
+ */
+int deleteEmployee(Employee *list, int len) {
+	int retorno = -1;
+	int id = 0;
+	int index = 0;
+	char confirmacion;
+	if (list != NULL && len > 0) {
+		printf("Estos son los empleados:\n");
+		printEmployees(list, len);
+		confirmacion =
+				getConfirmacion(
+						"Esta seguro de continuar? presione \"s\" para SI o \"n\" para CANCELAR\n");
+		if (confirmacion != 'n') {
 			id = getInt("\nIngrese el id del empleado que desea dar de baja:");
 			printf("\n");
 			index = findEmployeeById(list, len, id);
@@ -421,247 +428,203 @@ int loadEmployee(Employee *list, int len) {
 				}
 			}
 		}
-		return retorno;
+		else{
+			retorno = 2;
+		}
 	}
+	return retorno;
+}
 
-	/** \brief Elimina un empleado por ID, esta funcion es llamada por deleteEmployee
-	 *
-	 * \param list Employee* Recibe un puntero a un array de empleados
-	 * \param len int Recibe el largo del array de empleados
-	 * \param id int Recibe el id del empleado a eliminar
-	 * \return int Devuelve 0 si realizo la eliminacion o -1 (si no encontro al empleado, si el largo del array es invalido o si el puntero al array es NULL)
-	 *
-	 */
-	int removeEmployee(Employee *list, int len, int id) {
-		int retorno = -1;
-		int i;
-		if (list != NULL && len > 0) {
-			for (i = 0; i < len; i++) {
-				if (list[i].isEmpty == FALSE) {
-					if (list[i].id == id) {
-						list[i].isEmpty = TRUE;
-						retorno = 0;
+/** \brief Elimina un empleado por ID, esta funcion es llamada por deleteEmployee
+ *
+ * \param list Employee* Recibe un puntero a un array de empleados
+ * \param len int Recibe el largo del array de empleados
+ * \param id int Recibe el id del empleado a eliminar
+ * \return int Devuelve 0 si realizo la eliminacion o -1 (si no encontro al empleado, si el largo del array es invalido o si el puntero al array es NULL)
+ *
+ */
+int removeEmployee(Employee *list, int len, int id) {
+	int retorno = -1;
+	int i;
+	if (list != NULL && len > 0) {
+		for (i = 0; i < len; i++) {
+			if (list[i].isEmpty == FALSE) {
+				if (list[i].id == id) {
+					list[i].isEmpty = TRUE;
+					retorno = 0;
+					break;
+				}
+			}
+		}
+	}
+	return retorno;
+}
+
+/** \brief Busca si hay al menos un lugar ocupado en el array
+ *
+ * \param list Employee* Recibe un puntero a array de empleados
+ * \param len int Recibe el largo del array de empleados
+ * \return int Devuelve el 0 o -1 (si no hay lugar ocupado, si el largo del array es invalido o si el puntero al array es NULL)
+ *
+ */
+int getIsOccupied(Employee *list, int len) {
+	int i;
+	int retorno = -1;
+	if (list != NULL && len > 0) {
+		for (i = 0; i < len; i++) {
+			if (list[i].isEmpty == FALSE) {
+				retorno = 0;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
+
+/** \brief Submenu de modificaciones a un empleado del array
+ *
+ * \param list Employee* puntero a un array de empleados
+ * \param len int largo del array de empleados
+ * \return int Devuelve "0" si logro ordenar o "-1" (si el largo del array esta mal o si el puntero al array es NULL o si no encuentra al empleado)
+ *
+ */
+int modificarEmpleado(Employee *list, int len) {
+	int retorno = -1;
+	int id;
+	int indice;
+	Employee aux;
+	int opcion;
+	char confirmacion;
+	char cargar = 'n';
+
+	printEmployees(list, len);
+	confirmacion = getConfirmacion("Esta seguro de continuar? presione \"s\" para SI o \"n\" para CANCELAR\n");
+
+	if(confirmacion == 's')
+	{
+		id = getInt("\nIngrese el id del empleado a modificar, o \"5\" para cancelar:");
+			indice = findEmployeeById(list, len, id);
+
+			if (indice != -1) {
+				aux = list[indice];
+				do {
+					system("cls");
+					opcion =
+							getInt(
+									"Ingrese una opcion:\n1. Cambiar nombre.\n2. Cambiar apellido.\n3. Cambiar salario.\n4. Cambiar sector.\n5. Salir al menu anterior.\n");
+					switch (opcion) {
+					case 1:
+						pedirCadena("Ingrese un nombre: ", aux.name);
+						confirmacion =
+								getConfirmacion(
+										"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
+						printf("\n");
+						system("pause");
+						break;
+					case 2:
+						pedirCadena("Ingrese un apellido: ", aux.lastName);
+						confirmacion =
+								getConfirmacion(
+										"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO:");
+						printf("\n");
+						system("pause");
+						break;
+					case 3:
+						aux.salary = getFloat("Ingrese el salario nuevo:");
+						confirmacion =
+								getConfirmacion(
+										"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
+						printf("\n");
+						system("pause");
+						break;
+					case 4:
+						aux.sector = getInt("Ingrese el sector nuevo:");
+						confirmacion =
+								getConfirmacion(
+										"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
+						printf("\n");
+						system("pause");
+						break;
+					case 5:
+						confirmacion = 'n';
+						printf("\n");
+						break;
+					default:
+						printf("Ingreso una opcion incorrecta.\n");
+						printf("\n");
+						system("pause");
 						break;
 					}
-				}
-			}
-		}
-		return retorno;
-	}
+				} while (confirmacion == 's');
 
-	/** \brief Busca si hay al menos un lugar ocupado en el array
-	 *
-	 * \param list Employee* Recibe un puntero a array de empleados
-	 * \param len int Recibe el largo del array de empleados
-	 * \return int Devuelve el 0 o -1 (si no hay lugar ocupado, si el largo del array es invalido o si el puntero al array es NULL)
-	 *
-	 */
-	int getIsOccupied(Employee *list, int len) {
-		int i;
-		int retorno = -1;
-		if (list != NULL && len > 0) {
-			for (i = 0; i < len; i++) {
-				if (list[i].isEmpty == FALSE) {
-					retorno = 0;
-					break;
-				}
-			}
-		}
-		return retorno;
-	}
-
-	/** \brief Submenu de modificaciones a un empleado del array
-	 *
-	 * \param list Employee* puntero a un array de empleados
-	 * \param len int largo del array de empleados
-	 * \return int Devuelve "0" si logro ordenar o "-1" (si el largo del array esta mal o si el puntero al array es NULL o si no encuentra al empleado)
-	 *
-	 */
-	int modificarEmpleado(Employee *list, int len) {
-		int retorno = -1;
-		int id;
-		int indice;
-		Employee aux;
-		int opcion;
-		char confirmacion = 's';
-		char cargar = 'n';
-
-		printEmployees(list, len);
-
-		id = getInt("\nIngrese el id del empleado a modificar:");
-		indice = findEmployeeById(list, len, id);
-
-		if (indice != -1) {
-			aux = list[indice];
-			do {
-				system("cls");
-				opcion =
-						getInt(
-								"Ingrese una opcion:\n1. Cambiar nombre.\n2. Cambiar apellido.\n3. Cambiar salario.\n4. Cambiar sector.\n5. Salir al menu anterior.\n");
-				switch (opcion) {
-				case 1:
-					pedirCadena("Ingrese un nombre: ", aux.name);
-					confirmacion =
+					printf("Este es el empleado:\n");
+					printf("\n");
+					showOneEmployee(aux);
+					printf("\n");
+					cargar =
 							getConfirmacion(
-									"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
-					printf("\n");
-					system("pause");
-					break;
-				case 2:
-					pedirCadena("Ingrese un apellido: ", aux.lastName);
-					confirmacion =
-							getConfirmacion(
-									"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO:");
-					printf("\n");
-					system("pause");
-					break;
-				case 3:
-					aux.salary = getFloat("Ingrese el salario nuevo:");
-					confirmacion =
-							getConfirmacion(
-									"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
-					printf("\n");
-					system("pause");
-					break;
-				case 4:
-					aux.sector = getInt("Ingrese el sector nuevo:");
-					confirmacion =
-							getConfirmacion(
-									"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
-					printf("\n");
-					system("pause");
-					break;
-				case 5:
-					confirmacion = 'n';
-					printf("\n");
-					system("pause");
-					break;
-				default:
-					printf("Ingreso una opcion incorrecta.\n");
-					printf("\n");
-					system("pause");
-					break;
-				}
-			}while(confirmacion == 's');
-
-			printf("Este es el empleado:\n");
-			printf("\n");
-			showOneEmployee(aux);
-			printf("\n");
-			cargar =
-					getConfirmacion(
-							"\nDesea cargar los datos? Ingrese \"s\" para SI o \"n\" para NO:");
-			if (cargar == 's') {
-				list[indice] = aux;
-				retorno = 1;
-			} else {
-				retorno = 0;
-			}
-		}
-		return retorno;
-	}
-
-	/** \brief Muestra un submenu de informes de salarios y opcion para ordenar la lista de empleados
-	 *
-	 * \param list Employee* puntero a un array de empleados
-	 * \param len int largo del array empleados
-	 * \return int Devuelve "0" si pudo entrar al menu "-1" (si el largo del array esta mal, si el array es NULL) o "1" si no pudo hacer el ordenamiento.
-	 *
-	 */
-	int informarEmpleado(Employee *list, int len) {
-		int retorno = -1;
-		int opcion;
-		int orden;
-		int opcionContinuar = 's';
-		if (list != NULL && len > 0) {
-			do {
-				system("cls");
-				opcion =
-						getInt(
-								"Ingrese una opcion:\n1. Listado de los empleados, ordenado alfabeticamente por apellido y sector.\n2. Informe de los salarios.\n3. Salir al menu anterior.\n");
-				switch (opcion) {
-				case 1:
-					orden =
-							getInt(
-									"\nIngrese \"1\" si desea ordenar de manera ascendente o \"0\" si desea ordenar de manera descendente:");
-					if (sortEmployees(list, len, orden) != -1) {
-						printEmployees(list, len);
-					} else {
+									"\nDesea cargar los datos? Ingrese \"s\" para SI o \"n\" para NO:");
+					if (cargar == 's') {
+						list[indice] = aux;
 						retorno = 1;
+					} else {
+						retorno = 0;
 					}
-					printf("\n");
-					system("pause");
-					break;
-				case 2:
-					menuInformesSalarios(list, len);
-					printf("\n");
-					system("pause");
-					break;
-				case 3:
-					opcionContinuar = 'n';
-					retorno = 0;
-					break;
-				default:
-					printf("Ingreso una opcion incorrecta.\n");
-					printf("\n");
-					system("pause");
-					break;
-				}
-			}while (opcionContinuar == 's');
-		}
-		return retorno;
+
+			}//fin del segundo if.
+	}//fin del primer if
+	else{
+		retorno = 0;
 	}
 
-	/** \brief Muestra por consola un submenu con informes de los salarios
-	 *
-	 * \param list Employee* puntero a un array de empleados
-	 * \param len int con el largo del array de empleados
-	 * \return void
-	 *
-	 */
-	void menuInformesSalarios(Employee *list, int len) {
-		float salarios;
-		int opcion;
-		char opcionContinuar = 's';
+	return retorno;
+}
+
+/** \brief Muestra un submenu de informes de salarios y opcion para ordenar la lista de empleados
+ *
+ * \param list Employee* puntero a un array de empleados
+ * \param len int largo del array empleados
+ * \return int Devuelve "0" si pudo entrar al menu "-1" (si el largo del array esta mal, si el array es NULL) o "1" si no pudo hacer el ordenamiento.
+ *
+ */
+int informarEmpleado(Employee *list, int len) {
+	int retorno = -1;
+	int opcion;
+	int orden;
+	int opcionContinuar = 's';
+	if (list != NULL && len > 0) {
 		do {
 			system("cls");
+			printf("Ingrese una opcion: \n");
 			opcion =
 					getInt(
-							"Ingrese una opcion:\n1.Informe del salario total.\n2.Informe del promedio de salarios.\n3.Informe de los salarios mayores al promedio.\n4.Salir al menu anterior.\n");
+							"1. Listado de los empleados, ordenado alfabeticamente por apellido y sector.\n2. Informe de los salarios.\n3. Mostrar Empleados sin ordenar\n4. Salir al menu anterior.\n");
 			switch (opcion) {
 			case 1:
-				salarios = getTotalSalarios(list, len);
-				if (salarios == -1) {
-					printf("No hay total de salarios a mostrar.\n");
+				orden =
+						getInt(
+								"\nIngrese \"1\" si desea ordenar de manera ascendente o \"0\" si desea ordenar de manera descendente:");
+				if (sortEmployees(list, len, orden) != -1) {
+					printEmployees(list, len);
 				} else {
-					printf("Este es el total de los salarios: %.3f\n",
-							salarios);
+					retorno = 1;
 				}
 				printf("\n");
 				system("pause");
 				break;
 			case 2:
-				salarios = getPromedioSalarios(list, len);
-				if (salarios == -1) {
-					printf("No hay salario promedio a mostrar.\n");
-				} else {
-					printf("Este es el promedio de los salarios: %.3f\n",
-							salarios);
-				}
+				menuInformesSalarios(list, len);
 				printf("\n");
 				system("pause");
 				break;
 			case 3:
-				salarios = getMaximoSalario(list, len);
-				if (salarios == -1) {
-					printf(
-							"No hay empleados con salarios mayores al promedio.");
-				}
-				printf("\n");
+				printf("Estos son los empleados:\n");
+				printEmployees(list, len);
 				system("pause");
 				break;
 			case 4:
 				opcionContinuar = 'n';
+				retorno = 0;
 				break;
 			default:
 				printf("Ingreso una opcion incorrecta.\n");
@@ -671,26 +634,101 @@ int loadEmployee(Employee *list, int len) {
 			}
 		} while (opcionContinuar == 's');
 	}
+	return retorno;
+}
 
-	/** \brief  Ordena los elementos del array de empleados, el parametro order indice "1" ascendente o "0" descendente
-	 *
-	 * \param list Employee* Puntero a un array de empleados
-	 * \param len int largo del array de empleados
-	 * \param order int "1" ascendente y "0" descendente
-	 * \return int Devuelve 0 si logro ordenar o -1 (si el largo del array es invalido o si el puntero al array es NULL)
-	 *
-	 */
-	int sortEmployees(Employee *list, int len, int order) {
-		int retorno = -1;
-		Employee auxEmployee;
-		if (list != NULL && len > 0) {
-			if (order == 1) { //criterio ascendente por param
+/** \brief Muestra por consola un submenu con informes de los salarios
+ *
+ * \param list Employee* puntero a un array de empleados
+ * \param len int con el largo del array de empleados
+ * \return void
+ *
+ */
+void menuInformesSalarios(Employee *list, int len) {
+	float salarios;
+	int opcion;
+	char opcionContinuar = 's';
+	do {
+		system("cls");
+		opcion =
+				getInt(
+						"Ingrese una opcion:\n1.Informe del salario total.\n2.Informe del promedio de salarios.\n3.Informe de los salarios mayores al promedio.\n4.Salir al menu anterior.\n");
+		switch (opcion) {
+		case 1:
+			salarios = getTotalSalarios(list, len);
+			if (salarios == -1) {
+				printf("No hay total de salarios a mostrar.\n");
+			} else {
+				printf("Este es el total de los salarios: %.3f\n", salarios);
+			}
+			printf("\n");
+			system("pause");
+			break;
+		case 2:
+			salarios = getPromedioSalarios(list, len);
+			if (salarios == -1) {
+				printf("No hay salario promedio a mostrar.\n");
+			} else {
+				printf("Este es el promedio de los salarios: %.3f\n", salarios);
+			}
+			printf("\n");
+			system("pause");
+			break;
+		case 3:
+			salarios = getMaximoSalario(list, len);
+			if (salarios == -1) {
+				printf("No hay empleados con salarios mayores al promedio.");
+			}
+			printf("\n");
+			system("pause");
+			break;
+		case 4:
+			opcionContinuar = 'n';
+			break;
+		default:
+			printf("Ingreso una opcion incorrecta.\n");
+			printf("\n");
+			system("pause");
+			break;
+		}
+	} while (opcionContinuar == 's');
+}
+
+/** \brief  Ordena los elementos del array de empleados, el parametro order indice "1" ascendente o "0" descendente
+ *
+ * \param list Employee* Puntero a un array de empleados
+ * \param len int largo del array de empleados
+ * \param order int "1" ascendente y "0" descendente
+ * \return int Devuelve 0 si logro ordenar o -1 (si el largo del array es invalido o si el puntero al array es NULL)
+ *
+ */
+int sortEmployees(Employee *list, int len, int order) {
+	int retorno = -1;
+	Employee auxEmployee;
+	if (list != NULL && len > 0) {
+		if (order == 1) { //criterio ascendente por param
+			for (int i = 0; i < len - 1; i++) {
+				for (int j = i + 1; j < len; j++) {
+					if ((strcmp(list[i].lastName, list[j].lastName) > 0
+							&& (list[i].sector == list[j].sector))
+							|| (list[i].sector != list[j].sector
+									&& list[i].sector > list[j].sector)) {
+						auxEmployee = list[i];
+						list[i] = list[j];
+						list[j] = auxEmployee;
+					}
+				}
+			}
+			retorno = 0;
+		} else {
+			if (order == 0) //criterio descendente por param
+					{
 				for (int i = 0; i < len - 1; i++) {
 					for (int j = i + 1; j < len; j++) {
-						if ((strcmp(list[i].lastName, list[j].lastName) > 0
+						if ((strcmp(list[i].lastName, list[j].lastName) < 0
 								&& (list[i].sector == list[j].sector))
 								|| (list[i].sector != list[j].sector
-										&& list[i].sector > list[j].sector)) {
+										&& list[i].sector < list[j].sector)) {
 							auxEmployee = list[i];
 							list[i] = list[j];
 							list[j] = auxEmployee;
@@ -698,99 +736,82 @@ int loadEmployee(Employee *list, int len) {
 					}
 				}
 				retorno = 0;
-			} else {
-				if (order == 0) //criterio descendente por param
-						{
-					for (int i = 0; i < len - 1; i++) {
-						for (int j = i + 1; j < len; j++) {
-							if ((strcmp(list[i].lastName, list[j].lastName) < 0
-									&& (list[i].sector == list[j].sector))
-									|| (list[i].sector != list[j].sector
-											&& list[i].sector > list[j].sector)) {
-								auxEmployee = list[i];
-								list[i] = list[j];
-								list[j] = auxEmployee;
-							}
-						}
-					}
-					retorno = 0;
-				}
 			}
-		} //fin del primer if
-		return retorno;
-	}
+		}
+	} //fin del primer if
+	return retorno;
+}
 
-	/** \brief Calcula el monto total de los salarios
-	 *
-	 * \param list Employee*  puntero a un array de empleados
-	 * \param len int Recibe el largo del array de empleados
-	 * \return float Devuelte el total de los salarios
-	 *
-	 */
-	float getTotalSalarios(Employee *list, int len) {
-		float retorno = -1;
-		int i;
-		float contadorSalariosTotal = 0;
-		if (list != NULL && len > 0) {
+/** \brief Calcula el monto total de los salarios
+ *
+ * \param list Employee*  puntero a un array de empleados
+ * \param len int Recibe el largo del array de empleados
+ * \return float Devuelte el total de los salarios
+ *
+ */
+float getTotalSalarios(Employee *list, int len) {
+	float retorno = -1;
+	int i;
+	float contadorSalariosTotal = 0;
+	if (list != NULL && len > 0) {
+		for (i = 0; i < len; i++) {
+			if (list[i].isEmpty == FALSE) {
+				contadorSalariosTotal = list[i].salary + contadorSalariosTotal;
+			}
+		}
+		retorno = contadorSalariosTotal;
+	}
+	return retorno;
+}
+
+/** \brief Calcula el promedio de los salarios
+ *
+ * \param list Employee* Puntero a array de empleados
+ * \param len int largo del array empleados
+ * \return float Devuelve el/los salario promedio o "-1" (si el largo del array esta mal, si el array es NULL o no encontro a los empleados)
+ *
+ */
+float getPromedioSalarios(Employee *list, int len) {
+	float retorno = -1;
+	float acumuladorSalarios = 0;
+	float contadorEmpleados = 0;
+	float promedioSalarios = 0;
+	int i;
+	acumuladorSalarios = getTotalSalarios(list, len);
+	if (list != NULL && len > 0 && acumuladorSalarios != -1) {
+		for (i = 0; i < len; i++) {
+			if (list[i].isEmpty == FALSE) {
+				contadorEmpleados++;
+			}
+		}
+		promedioSalarios = acumuladorSalarios / contadorEmpleados;
+		retorno = promedioSalarios;
+	}
+	return retorno;
+}
+
+/** \brief Muestra los empleados con salario mayor al promedio y los muestra
+ *
+ * \param list Employee* Puntero a array de empleados
+ * \param len int largo del array de empleados
+ * \return int Devuelve "1" si encontro al menos un empleado o "-1" (si el largo del array esta mal, si el array es NULL o no encontro a NINGUN empleado con salario mayor al promedio)
+ *
+ */
+int getMaximoSalario(Employee *list, int len) {
+	int retorno = -1;
+	float salarioPromedio = getPromedioSalarios(list, len);
+	int i;
+	if (list != NULL && len > 0) {
+		if (salarioPromedio != -1) {
 			for (i = 0; i < len; i++) {
 				if (list[i].isEmpty == FALSE) {
-					contadorSalariosTotal = list[i].salary
-							+ contadorSalariosTotal;
-				}
-			}
-			retorno = contadorSalariosTotal;
-		}
-		return retorno;
-	}
-
-	/** \brief Calcula el promedio de los salarios
-	 *
-	 * \param list Employee* Puntero a array de empleados
-	 * \param len int largo del array empleados
-	 * \return float Devuelve el/los salario promedio o "-1" (si el largo del array esta mal, si el array es NULL o no encontro a los empleados)
-	 *
-	 */
-	float getPromedioSalarios(Employee *list, int len) {
-		float retorno = -1;
-		float acumuladorSalarios = 0;
-		float contadorEmpleados = 0;
-		float promedioSalarios = 0;
-		int i;
-		acumuladorSalarios = getTotalSalarios(list, len);
-		if (list != NULL && len > 0 && acumuladorSalarios != -1) {
-			for (i = 0; i < len; i++) {
-				if (list[i].isEmpty == FALSE) {
-					contadorEmpleados++;
-				}
-			}
-			promedioSalarios = acumuladorSalarios / contadorEmpleados;
-			retorno = promedioSalarios;
-		}
-		return retorno;
-	}
-
-	/** \brief Muestra los empleados con salario mayor al promedio y los muestra
-	 *
-	 * \param list Employee* Puntero a array de empleados
-	 * \param len int largo del array de empleados
-	 * \return int Devuelve "1" si encontro al menos un empleado o "-1" (si el largo del array esta mal, si el array es NULL o no encontro a NINGUN empleado con salario mayor al promedio)
-	 *
-	 */
-	int getMaximoSalario(Employee *list, int len) {
-		int retorno = -1;
-		float salarioPromedio = getPromedioSalarios(list, len);
-		int i;
-		if (list != NULL && len > 0) {
-			if (salarioPromedio != -1) {
-				for (i = 0; i < len; i++) {
-					if (list[i].isEmpty == FALSE) {
-						if (salarioPromedio < list[i].salary) {
-							showOneEmployee(list[i]);
-							retorno = 1;
-						}
+					if (salarioPromedio < list[i].salary) {
+						showOneEmployee(list[i]);
+						retorno = 1;
 					}
 				}
 			}
 		}
-		return retorno;
 	}
+	return retorno;
+}

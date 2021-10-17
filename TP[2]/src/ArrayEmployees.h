@@ -9,6 +9,7 @@
 #define FALSE 1
 #define SECTORMIN 1
 #define SECTORMAX 6
+#define TAM_EM 1000
 
 #include <stdio.h>
 #include <stdlib.h>
