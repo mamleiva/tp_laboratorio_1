@@ -22,7 +22,6 @@ void showMenu(Employee list[], int len) {
 	initEmployees(list, len);
 	initIds(list, len);
 
-
 	do {
 		system("cls");
 		printf("******* MENU DE GESTION DE EMPLEADOS ******* \n");
@@ -343,8 +342,7 @@ int loadEmployee(Employee *list, int len) {
 
 			printf("\n");
 		} while (opcion_continuar != 'n');
-	}
-	else{
+	} else {
 		retorno = -1;
 	}
 
@@ -427,8 +425,7 @@ int deleteEmployee(Employee *list, int len) {
 					retorno = 2;
 				}
 			}
-		}
-		else{
+		} else {
 			retorno = 2;
 		}
 	}
@@ -498,82 +495,82 @@ int modificarEmpleado(Employee *list, int len) {
 	char cargar = 'n';
 
 	printEmployees(list, len);
-	confirmacion = getConfirmacion("Esta seguro de continuar? presione \"s\" para SI o \"n\" para CANCELAR\n");
+	confirmacion =
+			getConfirmacion(
+					"Esta seguro de continuar? presione \"s\" para SI o \"n\" para CANCELAR\n");
 
-	if(confirmacion == 's')
-	{
-		id = getInt("\nIngrese el id del empleado a modificar, o \"5\" para cancelar:");
-			indice = findEmployeeById(list, len, id);
+	if (confirmacion == 's') {
+		id = getInt("\nIngrese el id del empleado a modificar: ");
+		indice = findEmployeeById(list, len, id);
 
-			if (indice != -1) {
-				aux = list[indice];
-				do {
-					system("cls");
-					opcion =
-							getInt(
-									"Ingrese una opcion:\n1. Cambiar nombre.\n2. Cambiar apellido.\n3. Cambiar salario.\n4. Cambiar sector.\n5. Salir al menu anterior.\n");
-					switch (opcion) {
-					case 1:
-						pedirCadena("Ingrese un nombre: ", aux.name);
-						confirmacion =
-								getConfirmacion(
-										"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
-						printf("\n");
-						system("pause");
-						break;
-					case 2:
-						pedirCadena("Ingrese un apellido: ", aux.lastName);
-						confirmacion =
-								getConfirmacion(
-										"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO:");
-						printf("\n");
-						system("pause");
-						break;
-					case 3:
-						aux.salary = getFloat("Ingrese el salario nuevo:");
-						confirmacion =
-								getConfirmacion(
-										"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
-						printf("\n");
-						system("pause");
-						break;
-					case 4:
-						aux.sector = getInt("Ingrese el sector nuevo:");
-						confirmacion =
-								getConfirmacion(
-										"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
-						printf("\n");
-						system("pause");
-						break;
-					case 5:
-						confirmacion = 'n';
-						printf("\n");
-						break;
-					default:
-						printf("Ingreso una opcion incorrecta.\n");
-						printf("\n");
-						system("pause");
-						break;
-					}
-				} while (confirmacion == 's');
-
-					printf("Este es el empleado:\n");
-					printf("\n");
-					showOneEmployee(aux);
-					printf("\n");
-					cargar =
+		if (indice != -1) {
+			aux = list[indice];
+			do {
+				system("cls");
+				opcion =
+						getInt(
+								"Ingrese una opcion:\n1. Cambiar nombre.\n2. Cambiar apellido.\n3. Cambiar salario.\n4. Cambiar sector.\n5. Salir al menu anterior.\n");
+				switch (opcion) {
+				case 1:
+					pedirCadena("Ingrese un nombre: ", aux.name);
+					confirmacion =
 							getConfirmacion(
-									"\nDesea cargar los datos? Ingrese \"s\" para SI o \"n\" para NO:");
-					if (cargar == 's') {
-						list[indice] = aux;
-						retorno = 1;
-					} else {
-						retorno = 0;
-					}
+									"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
+					printf("\n");
+					system("pause");
+					break;
+				case 2:
+					pedirCadena("Ingrese un apellido: ", aux.lastName);
+					confirmacion =
+							getConfirmacion(
+									"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO:");
+					printf("\n");
+					system("pause");
+					break;
+				case 3:
+					aux.salary = getFloat("Ingrese el salario nuevo:");
+					confirmacion =
+							getConfirmacion(
+									"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
+					printf("\n");
+					system("pause");
+					break;
+				case 4:
+					aux.sector = getInt("Ingrese el sector nuevo:");
+					confirmacion =
+							getConfirmacion(
+									"\nDesea seguir ingresando datos? Ingrese \"s\" para SI o \"n\" para NO: ");
+					printf("\n");
+					system("pause");
+					break;
+				case 5:
+					confirmacion = 'n';
+					printf("\n");
+					break;
+				default:
+					printf("Ingreso una opcion incorrecta.\n");
+					printf("\n");
+					system("pause");
+					break;
+				}
+			} while (confirmacion == 's');
+			printf("Este es el empleado:\n");
+			printf("\n");
+			showOneEmployee(aux);
+			printf("\n");
+			cargar =
+					getConfirmacion(
+							"\nDesea cargar los datos? Ingrese \"s\" para SI o \"n\" para NO:");
+			if (cargar == 's') {
+				list[indice] = aux;
+				retorno = 1;
+			} else {
+				retorno = 0;
+			}
 
-			}//fin del segundo if.
-	}//fin del primer if
-	else{
+		} //fin del segundo if.
+	} //fin del primer if
+	else {
 		retorno = 0;
 	}
 
